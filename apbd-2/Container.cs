@@ -57,8 +57,8 @@ class FluidContainer : Container, IHazardNotifier
 
     public virtual void Fill(Fluid fluid, double amount)
     {
-        var newWeight = amount + cargoWeight + weight;
-        if (newWeight > maxWeight) throw new OverfillException();
+        var newWeight = amount + cargoWeight;
+        if (newWeight + weight > maxWeight) throw new OverfillException();
         if (fluid.hazard && newWeight > 0.5 * this.maxWeight) notifyAboutHazard();
         else if (newWeight > 0.9 * this.maxWeight) notifyAboutHazard();
         this.cargoWeight = newWeight;
@@ -116,7 +116,7 @@ class FreezerContainer : Container
     {
         if (this.food != null && food.name != this.food.name)  throw new IllegalTypeException();
         this.food = food;
-        var newWeight = amount + cargoWeight + weight;
+        var newWeight = amount + cargoWeight;
         if (newWeight + weight > maxWeight) throw new OverfillException();
         cargoWeight = newWeight;
     }
